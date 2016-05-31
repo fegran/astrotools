@@ -19,6 +19,12 @@ if len(sys.argv) < 2:
 info_file = sys.argv[1]
 #################################
 
+if '.sel' in info_file:
+    os.system('clear')
+    print 'Archivo info no valido: ".sel"'
+    print 'Cambiar nombre o archivo'
+    sys.exit(True)
+
 out_file = info_file[:info_file.find('.')]+'.sel'
 warnings.filterwarnings('ignore')
 if os.path.exists(out_file):
@@ -101,4 +107,5 @@ while True:
 if np.sum(final_election) != 0:
     data = ascii.read(info_file)
     data = data[final_election.astype(bool)]
-    ascii.write(data, out_file, delimiter='\t', format='fixed_width', comment='#')
+    ascii.write(data, out_file, delimiter='\t', format='fixed_width')
+    os.system('sed -i "" "s/ID/%sID/g" %s' %('#',out_file))
