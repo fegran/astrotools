@@ -82,7 +82,7 @@ while True:
 
     if election == 's':
         final_election[i] = 1
-        plt.savefig('%d.pdf' %ids[i], format='ps')
+        plt.savefig('%d.ps' %ids[i], format='ps')
         i = i + 1
         plt.close()
     if election == '':
