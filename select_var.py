@@ -39,14 +39,14 @@ def plotter(i, ids, P1, P2, P3):
     mean = np.average(mag, weights=1/err**2)
     amp = np.abs(np.min(mag)-np.max(mag))
 
-    plt.figure(figsize=(9,7))
+    plt.figure(figsize=(8,6))
     for j, P in enumerate([P1, P2, P3, 1]):
         phase = phaser(mjd,P)
         plt.subplot(2,2,j+1)
         plt.suptitle(r'ID: $%d$' %ids, size=16)
         plt.gca().invert_yaxis()
         if P != 1.:
-            plt.title(r'$P_{%d} = %3.2f$ d' %(j+1,P) )
+            plt.title(r'$P_{%d} = %3.3f$' %(j+1,P) )
             plt.xlabel('Phase')
             plt.errorbar(phase,mag,err,fmt='ko',alpha=0.5)
             plt.errorbar(phase+1,mag,err,fmt='ko',alpha=0.5)
@@ -82,6 +82,7 @@ while True:
 
     if election == 's':
         final_election[i] = 1
+        plt.savefig('%d.pdf' %ids[i], format='ps')
         i = i + 1
         plt.close()
     if election == '':
