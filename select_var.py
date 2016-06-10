@@ -46,7 +46,7 @@ def plotter(i, ids, P1, P2, P3):
         plt.suptitle(r'ID: $%d$' %ids, size=16)
         plt.gca().invert_yaxis()
         if P != 1.:
-            plt.title(r'$P_{%d} = %3.3f$' %(j+1,P) )
+            plt.title(r'$P_{%d} = %3.2f$ d' %(j+1,P) )
             plt.xlabel('Phase')
             plt.errorbar(phase,mag,err,fmt='ko',alpha=0.5)
             plt.errorbar(phase+1,mag,err,fmt='ko',alpha=0.5)
@@ -71,24 +71,23 @@ final_election = np.zeros_like(ids).astype(int)
 i = 0
 while True:
 
+    if i >= len(ids):
+        break
+
     plotter(i, ids[i], P1[i], P2[i], P3[i])
 
     election = 'VVV'
     while election not in ['s', '', 'p', 'q']:
-        election = raw_input('Eleccion para esta curva: (s) save, (ENTER) next, (p) previous, (q) quit: \n')
+        election = raw_input('Eleccion para esta curva %d/%d: (s) save, (ENTER) next, (p) previous, (q) quit: \n' %(i+1,len(ids)))
 
     if election == 's':
         final_election[i] = 1
         i = i + 1
         plt.close()
-        if i == len(ids):
-            break
     if election == '':
         final_election[i] = 0
         i = i + 1
         plt.close()
-        if i == len(ids):
-            break
     if election == 'p':
         plt.close()
         if i == 0:
@@ -107,5 +106,5 @@ while True:
 if np.sum(final_election) != 0:
     data = ascii.read(info_file)
     data = data[final_election.astype(bool)]
-    ascii.write(data, out_file, delimiter='\t', format='fixed_width')
+    ascii.write(data, out_file, delimiter=' ', format='fixed_width', formats={'%7.0f','%8.8f','%8.8f','%5.2f','%6.4f','%5.3f','%8.2f','%8.2f','%7.4f','%7.4f','%7.4f','%7.4f','%11.6f','%11.6f','%11.6f','%11.6f','%5.0f','%5.0f'})
     os.system('sed -i "" "s/ID/%sID/g" %s' %('#',out_file))
