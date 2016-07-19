@@ -72,7 +72,15 @@ i = 0
 while True:
 
     if i >= len(ids):
-        break
+        election = 'VVV'
+        while election not in ['', 'p']:
+            election = raw_input('Proceso completado!! Eleccion: (p) previous, (ENTER) quit: \n')
+        if election == '':
+            plt.close('all')
+            break
+        if election == 'p':
+            i = i - 1
+            continue
 
     plotter(i, ids[i], P1[i], P2[i], P3[i])
 
@@ -82,15 +90,15 @@ while True:
 
     if election == 's':
         final_election[i] = 1
-        plt.savefig('%d.ps' %ids[i], format='ps')
+        plt.savefig('%d.pdf' %ids[i], format='pdf')
         i = i + 1
-        plt.close()
+        plt.close('all')
     if election == '':
         final_election[i] = 0
         i = i + 1
-        plt.close()
+        plt.close('all')
     if election == 'p':
-        plt.close()
+        plt.close('all')
         if i == 0:
             print 'No puedes retroceder de la posicion 1!!'
             continue
